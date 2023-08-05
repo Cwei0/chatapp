@@ -53,7 +53,10 @@ class Server(models.Model):
     description = models.CharField(max_length=250, null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL)
     banner = models.ImageField(
-        upload_to=server_banner_upload_path, blank=True, null=True, validators=[validate_image_file_extension]
+        upload_to=server_banner_upload_path,
+        blank=True,
+        null=True,
+        validators=[validate_image_file_extension],
     )
     icon = models.ImageField(
         upload_to=server_icon_upload_path,
