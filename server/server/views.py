@@ -1,9 +1,10 @@
+from .models import Server
+from .schema import server_list_docs
+from django.db.models import Count
+from .serializer import ServerSerializer
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
-from .models import Server
-from .serializer import ServerSerializer
-from django.db.models import Count
 
 
 # Create your views here.
@@ -20,6 +21,7 @@ class ServerListViewSet(ViewSet):
     queryset = Server.objects.all()
 
     # Handler for the HTTP GET request with query parameters
+    @server_list_docs
     def list(self, request):
         """
         Handler for the HTTP GET request with query parameters.
@@ -36,12 +38,18 @@ class ServerListViewSet(ViewSet):
             ValidationError: If the provided server id is not found or is not a valid integer.
 
         Notes:
-            The following query parameters can be used to filter the server list:
-            - `category`: Filter servers by category name.
-            - `qty`: Limit the number of servers returned.
-            - `by_user`: Filter servers owned by the authenticated user. Requires authentication.
-            - `by_serverid`: Filter server by a specific server id.
-            - `with_num_members`: Annotate the queryset with the number of members for each server.
+
+        The following query parameters can be used to filter the server list:
+            
+        - `category`: Filter servers by category name.
+            
+        - `qty`: Limit the number of servers returned.
+            
+        - `by_user`: Filter servers owned by the authenticated user. Requires authentication.
+            
+        - `by_serverid`: Filter server by a specific server id.
+            
+        - `with_num_members`: Annotate the queryset with the number of members for each server.
 
         """
 
@@ -52,18 +60,17 @@ class ServerListViewSet(ViewSet):
         by_server_id = request.query_params.get("by_serverid")
         with_num_members = request.query_params.get("with_num_members") == "true"
 
-        # Check if the request is trying to filter by user or server id without authentication
-        if by_user or by_server_id and not request.user.is_authenticated:
-            raise AuthenticationFailed()
-
         # Filter queryset by category if provided
         if category:
             self.queryset = self.queryset.filter(category__name=category)
 
         # Filter queryset by user's servers if by_user is True
         if by_user:
-            user_id = request.user.id
-            self.queryset = self.queryset.filter(members=user_id)
+            if by_user and request.user.is_authenticated:
+                user_id = request.user.id
+                self.queryset = self.queryset.filter(members=user_id)
+            else:
+                raise AuthenticationFailed()
 
         # Annotate queryset with the number of members in each server if with_num_members is True
         if with_num_members:
@@ -75,6 +82,8 @@ class ServerListViewSet(ViewSet):
 
         # Filter queryset by server id if provided
         if by_server_id:
+            if not request.user.is_authenticated:
+                raise AuthenticationFailed()
             try:
                 self.queryset = self.queryset.filter(id=by_server_id)
                 # If the server with the given id does not exist, raise a ValidationError
