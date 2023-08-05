@@ -137,9 +137,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "account.Account"
 
+auth_classes = [
+    "rest_framework.authentication.SessionAuthentication",
+    # "server.authentication.TokenAuthentication",
+]
+
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": auth_classes,
 }
 
 SPECTACULAR_SETTINGS = {

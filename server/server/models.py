@@ -20,7 +20,7 @@ class Server(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="server_category"
     )
-    description = models.CharField(max_length=250, null=True)
+    description = models.CharField(max_length=250, null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def __str__(self) -> str:
