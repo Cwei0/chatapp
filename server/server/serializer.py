@@ -9,6 +9,17 @@ class ChannelSerializer(ModelSerializer):
 
 
 class ServerSerializer(ModelSerializer):
+    """
+    Serializer for the Server model.
+
+    This serializer is used to convert Server model instances to JSON representations.
+
+    Attributes:
+        num_members (SerializerMethodField): A custom field that calculates and includes
+                                             the number of members in the server.
+
+    """
+
     num_members = SerializerMethodField()
     channel_server = ChannelSerializer(many=True)
 
