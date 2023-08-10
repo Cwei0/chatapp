@@ -72,7 +72,7 @@ class Server(models.Model):
                 existing.icon.delete(save=False)
             if existing.banner != self.banner:
                 existing.banner.delete(save=False)
-        super(Category, self).save(*args, **kwargs)
+        super(Server, self).save(*args, **kwargs)
 
     @receiver(models.signals.pre_delete, sender="server.Server")
     def server_delete_files(sender, instance, **kwargs):

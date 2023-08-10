@@ -4,6 +4,7 @@ from django.db.models import Count
 from .serializer import ServerSerializer
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
 
 
@@ -19,6 +20,7 @@ class ServerListViewSet(ViewSet):
 
     # Querying all the Servers from the database
     queryset = Server.objects.all()
+    permission_classes = [IsAuthenticated]
 
     # Handler for the HTTP GET request with query parameters
     @server_list_docs
