@@ -11,7 +11,7 @@ import MuiDrawer from "@mui/material/Drawer";
 
 export const Dashbord = () => {
   const theme = useTheme();
-  const below800 = useMediaQuery("(max-width:799px)");
+  const below800 = useMediaQuery("(max-width:599px)");
   const [open, setOpen] = useState<boolean>(!below800);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export const Dashbord = () => {
       "& .MuiDrawer-paper": openedMixin(),
     }),
     ...(!open && {
-      ...openedMixin(),
+      ...closedMixin(),
       "& .MuiDrawer-paper": closedMixin(),
     }),
   }));

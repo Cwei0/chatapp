@@ -1,5 +1,5 @@
 import { Box, CssBaseline } from "@mui/material";
-import { Dashbord, Navbar } from "./templates";
+import { Dashbord, Main, Navbar, SecondaryDashbord } from "./templates";
 
 export const Home = () => {
   return (
@@ -7,6 +7,8 @@ export const Home = () => {
       <CssBaseline />
       <Navbar />
       <Dashbord />
+      <SecondaryDashbord />
+      <Main />
     </Box>
   );
 };
