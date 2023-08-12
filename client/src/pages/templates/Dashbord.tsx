@@ -1,15 +1,24 @@
 import {
   Box,
-  Typography,
   styled,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { DrawToggle } from "../../components";
 import MuiDrawer from "@mui/material/Drawer";
 
-export const Dashbord = () => {
+type ChildProps = {
+  open: boolean;
+};
+
+type Props = {
+  children: ReactNode;
+};
+
+type ChildElement = React.ReactElement<ChildProps>;
+
+export const Dashbord = ({ children }: Props) => {
   const theme = useTheme();
   const below800 = useMediaQuery("(max-width:599px)");
   const [open, setOpen] = useState<boolean>(!below800);
@@ -84,12 +93,12 @@ export const Dashbord = () => {
             handleDrawOpen={handleDrawOpen}
             handleDrawClose={handleDrawClose}
           />
-          {[...Array(100)].map((_, i) => (
-            <Typography key={i} paragraph>
-              {i + 1}
-            </Typography>
-          ))}
         </Box>
+          {React.Children.map(children, (child) => {
+            return React.isValidElement(child)
+              ? React.cloneElement(child as ChildElement, { open })
+              : child;
+          })}
       </Box>
     </Drawer>
   );

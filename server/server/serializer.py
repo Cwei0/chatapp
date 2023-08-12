@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, StringRelatedField
 from .models import Server, Channel
 
 
@@ -22,6 +22,7 @@ class ServerSerializer(ModelSerializer):
 
     num_members = SerializerMethodField()
     channel_server = ChannelSerializer(many=True)
+    category = StringRelatedField()
 
     class Meta:
         model = Server
@@ -31,7 +32,7 @@ class ServerSerializer(ModelSerializer):
         if hasattr(obj, "num_members"):
             return obj.num_members
         return None
-    
+     
     def to_representation(self, instance):
         data = super().to_representation(instance)
         num_members = self.context.get("num_members")

@@ -20,7 +20,7 @@ class ServerListViewSet(ViewSet):
 
     # Querying all the Servers from the database
     queryset = Server.objects.all()
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     # Handler for the HTTP GET request with query parameters
     @server_list_docs
