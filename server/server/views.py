@@ -1,14 +1,45 @@
-from .models import Server
+from .models import Server, Category
 from .schema import server_list_docs
 from django.db.models import Count
-from .serializer import ServerSerializer
+from .serializer import ServerSerializer, CategorySerializer
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
 
 
 # Create your views here.
+class CategoryListViewSet(ViewSet):
+    """
+    ViewSet for handling Category-related operations.
+
+    Attributes:
+        queryset (QuerySet): QuerySet containing all Category objects.
+
+    """
+
+    # Querying all the Category from the database
+    queryset = Category.objects.all()
+
+    @extend_schema(responses=CategorySerializer(many=True))
+    def list(self, request):
+        """
+        Handler for the HTTP GET request to retrieve a list of Category objects.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: A serialized Response containing a list of Category objects.
+
+        """
+
+        # Serialize the Category objects and return the response
+        serializer = CategorySerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+
 class ServerListViewSet(ViewSet):
     """
     ViewSet for handling Server-related operations.
@@ -42,15 +73,15 @@ class ServerListViewSet(ViewSet):
         Notes:
 
         The following query parameters can be used to filter the server list:
-            
+
         - `category`: Filter servers by category name.
-            
+
         - `qty`: Limit the number of servers returned.
-            
+
         - `by_user`: Filter servers owned by the authenticated user. Requires authentication.
-            
+
         - `by_serverid`: Filter server by a specific server id.
-            
+
         - `with_num_members`: Annotate the queryset with the number of members for each server.
 
         """

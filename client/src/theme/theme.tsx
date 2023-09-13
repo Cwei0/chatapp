@@ -7,10 +7,10 @@ declare module "@mui/material/styles" {
     };
     primaryDraw: {
       width: number;
-      closed:number;
+      closed: number;
     };
     secondaryDraw: {
-      width:number;
+      width: number;
     };
   }
   // allow configuration using `createTheme`
@@ -23,7 +23,7 @@ declare module "@mui/material/styles" {
       closed?: number;
     };
     secondaryDraw?: {
-      width?:number;
+      width?: number;
     };
   }
 }
@@ -35,10 +35,10 @@ export const createMuiTheme = () => {
     },
     primaryDraw: {
       width: 240,
-      closed: 70
+      closed: 70,
     },
     secondaryDraw: {
-      width: 240
+      width: 240,
     },
     components: {
       MuiAppBar: {
@@ -50,6 +50,10 @@ export const createMuiTheme = () => {
     },
     typography: {
       fontFamily: ["IBM Plex Sans", "sans-serif"].join(","),
+      body1: {
+        fontWeight: 500,
+        letterSpacing: "-0.5px",
+      },
     },
   });
 

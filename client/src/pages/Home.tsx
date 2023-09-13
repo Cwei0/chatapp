@@ -1,6 +1,6 @@
 import { Box, CssBaseline } from "@mui/material";
-import { Dashbord, Main, Navbar, SecondaryDashbord } from "./templates";
-import { PopularChannel } from "../components";
+import { Dashbord, Main, Navbar, SecondaryDashbord } from "./layout";
+import { ExploreCategory, ExploreServers, PopularChannel } from "../components";
 
 export const Home = () => {
   return (
@@ -10,8 +10,12 @@ export const Home = () => {
       <Dashbord>
         <PopularChannel open={false} />
       </Dashbord>
-      <SecondaryDashbord />
-      <Main />
+      <SecondaryDashbord>
+        <ExploreCategory/>
+      </SecondaryDashbord>
+      <Main>
+        <ExploreServers/>
+      </Main>
     </Box>
   );
 };

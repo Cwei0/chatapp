@@ -1,5 +1,9 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, StringRelatedField
-from .models import Server, Channel
+from rest_framework.serializers import (
+    ModelSerializer,
+    SerializerMethodField,
+    StringRelatedField,
+)
+from .models import Server, Channel, Category
 
 
 class ChannelSerializer(ModelSerializer):
@@ -26,16 +30,39 @@ class ServerSerializer(ModelSerializer):
 
     class Meta:
         model = Server
-        exclude = ['members']
+        exclude = ["members"]
 
     def get_num_members(self, obj):
         if hasattr(obj, "num_members"):
             return obj.num_members
         return None
-     
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         num_members = self.context.get("num_members")
         if not num_members:
             data.pop("num_members", None)
         return data
+
+
+class CategorySerializer(ModelSerializer):
+    """
+    Serializer for the Category model.
+
+    This serializer is used to convert Category model instances to JSON representations.
+
+    Attributes:
+        model (Category): The Category model class.
+        fields (str): A string indicating that all fields from the model should be included.
+
+    """
+
+    class Meta:
+        model = Category
+        fields = "__all__"
+
+# The CategorySerializer class is responsible for serializing Category model instances.
+# It inherits from ModelSerializer, which simplifies the process of converting models to JSON.
+
+# In the Meta class, we specify that this serializer is associated with the Category model,
+# and we want to include all fields in the serialized output using 'fields = "__all__"'.

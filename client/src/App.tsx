@@ -4,7 +4,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { Home } from "./pages";
+import { Explore, Home } from "./pages";
 import { ThemeProvider } from "@emotion/react";
 import { createMuiTheme } from "./theme";
 
@@ -14,6 +14,7 @@ function App() {
     createRoutesFromElements(
       <Route>
         <Route path="/" element={<Home />} />
+        <Route path="/explore/:categoryName" element={<Explore />} />
       </Route>
     )
   );

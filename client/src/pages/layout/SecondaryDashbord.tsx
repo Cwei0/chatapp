@@ -1,6 +1,10 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
+import { ReactNode } from "react";
 
-export const SecondaryDashbord = () => {
+type Props = {
+  children: ReactNode;
+};
+export const SecondaryDashbord = ({ children }: Props) => {
   const theme = useTheme();
   return (
     <Box
@@ -13,11 +17,7 @@ export const SecondaryDashbord = () => {
         overflow: "auto",
       }}
     >
-      {[...Array(100)].map((_, i) => (
-        <Typography key={i} paragraph>
-          {i + 1}
-        </Typography>
-      ))}
+      {children}
     </Box>
   );
 };

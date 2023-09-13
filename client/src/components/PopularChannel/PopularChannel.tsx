@@ -13,19 +13,14 @@ import { useCrud } from "../../service";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MEDIA_URL } from "../../config";
+import { Server } from "../../types";
 
 type Props = {
   open: boolean;
 };
 
-interface Server {
-  id: string;
-  name: string;
-  category: string;
-  icon: string;
-}
 export const PopularChannel = ({ open }: Props) => {
-  const { data, fetchData, error, isLoading } = useCrud<Server>({
+  const { data, fetchData } = useCrud<Server>({
     apiUrl: "server/select/",
     initialData: [],
   });
@@ -34,7 +29,6 @@ export const PopularChannel = ({ open }: Props) => {
     fetchData();
   }, []);
 
-  console.log(data);
   return (
     <>
       <Box
