@@ -11,11 +11,21 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useEffect, useState } from "react";
+import { ExploreCategory } from "../../components";
 
 export function Navbar() {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const [sideMenu, setSideMenu] = useState<boolean>(false);
+  const list = () => (
+    <Box
+      sx={{ pt: `${theme.primaryAppBar.height}px`, minWidth: 200 }}
+      onClick={toggleDraw(false)}
+      onKeyDown={toggleDraw(false)}
+    >
+      <ExploreCategory/>
+    </Box>
+  );
   const toggleDraw =
     (open: boolean) =>
     (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent) => {
@@ -32,9 +42,9 @@ export function Navbar() {
 
   useEffect(() => {
     if (isLargeScreen && sideMenu) {
-      setSideMenu(!sideMenu)
+      setSideMenu(!sideMenu);
     }
-  }, [isLargeScreen, sideMenu])
+  }, [isLargeScreen, sideMenu]);
   return (
     <AppBar
       sx={{
@@ -56,17 +66,13 @@ export function Navbar() {
             aria-label="open drawer"
             onClick={toggleDraw(!sideMenu)}
             edge="start"
-            sx={{ mr: 1 }}
+            sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
         </Box>
         <Drawer anchor="left" open={sideMenu}>
-          {[...Array(100)].map((_, i) => (
-            <Typography paragraph key={i}>
-              {i + 1}
-            </Typography>
-          ))}
+          {list()}
         </Drawer>
         <Link href="/" underline="none" color="inherit">
           <Typography

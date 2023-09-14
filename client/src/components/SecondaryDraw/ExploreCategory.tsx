@@ -70,7 +70,7 @@ export const ExploreCategory = () => {
                 </ListItemIcon>
                 <ListItemText 
                   primary={
-                    <Typography variant="body1" textAlign="start" padding={1}>
+                    <Typography variant="body1" textAlign="start" padding={1} textTransform="capitalize">
                       {item.name}
                     </Typography>
                   }

@@ -75,6 +75,7 @@ export const PopularChannel = ({ open }: Props) => {
                         textOverflow: "ellipsis",
                         overflow: "hidden",
                         whiteSpace: "nowrap",
+                        textTransform: "capitalize"
                       }}
                     >
                       {item.name}
@@ -87,6 +88,7 @@ export const PopularChannel = ({ open }: Props) => {
                         fontWeight: 500,
                         lineHeight: 1.2,
                         color: "GrayText",
+                        textTransform: "capitalize"
                       }}
                     >
                       {item.category}
