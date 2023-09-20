@@ -28,7 +28,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-export const createMuiTheme = () => {
+export const createMuiTheme = (mode: "light" | "dark") => {
   let theme = createTheme({
     primaryAppBar: {
       height: 50,
@@ -39,6 +39,9 @@ export const createMuiTheme = () => {
     },
     secondaryDraw: {
       width: 240,
+    },
+    palette: {
+      mode: mode,
     },
     components: {
       MuiAppBar: {
@@ -57,8 +60,8 @@ export const createMuiTheme = () => {
       body2: {
         fontWeight: 500,
         fontSize: "15px",
-        letterSpacing: "-0.5px"
-      }
+        letterSpacing: "-0.5px",
+      },
     },
   });
 

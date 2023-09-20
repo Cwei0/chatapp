@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useEffect, useState } from "react";
-import { ExploreCategory } from "../../components";
+import { AccountButton, ExploreCategory } from "../../components";
 
 export function Navbar() {
   const theme = useTheme();
@@ -20,10 +20,10 @@ export function Navbar() {
   const list = () => (
     <Box
       sx={{ pt: `${theme.primaryAppBar.height}px`, minWidth: 200 }}
-      onClick={toggleDraw(false)}
-      onKeyDown={toggleDraw(false)}
+      onClick={() => toggleDraw(false)}
+      onKeyDown={() => toggleDraw(false)}
     >
-      <ExploreCategory/>
+      <ExploreCategory />
     </Box>
   );
   const toggleDraw =
@@ -84,6 +84,8 @@ export function Navbar() {
             DJCHAT
           </Typography>
         </Link>
+        <Box sx={{ flexGrow: 1 }}></Box>
+        <AccountButton/>
       </Toolbar>
     </AppBar>
   );

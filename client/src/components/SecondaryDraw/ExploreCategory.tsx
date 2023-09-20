@@ -17,6 +17,7 @@ import { Category } from "../../types";
 
 export const ExploreCategory = () => {
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
   const { data, fetchData } = useCrud<Category>({
     initialData: [],
     apiUrl: "server/category/",
@@ -24,6 +25,7 @@ export const ExploreCategory = () => {
 
   useEffect(() => {
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -64,6 +66,7 @@ export const ExploreCategory = () => {
                         height: "25px",
                         display: "block",
                         margin: "auto",
+                        filter: isDarkMode ? "invert(100%)" : "none"
                       }}
                     />
                   </ListItemAvatar>
