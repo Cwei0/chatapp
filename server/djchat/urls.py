@@ -17,9 +17,13 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from webchat.consumer import MyConsumer
+from webchat.consumer import WebChatConsumer
 from django.conf.urls.static import static
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,7 +33,9 @@ urlpatterns = [
     path("api/", include("djchat.router")),
 ]
 
-websockets_urlpatterns = [path("ws/test", MyConsumer.as_asgi())]
+websockets_urlpatterns = [
+    path("<str:serverId>/<str:channelId>", WebChatConsumer.as_asgi())
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

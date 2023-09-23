@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Internal
     "account",
     "server",
+    "webchat",
 ]
 
 MIDDLEWARE = [
@@ -168,3 +169,9 @@ CORS_URLS_REGEX = r"^/api/.*$"
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

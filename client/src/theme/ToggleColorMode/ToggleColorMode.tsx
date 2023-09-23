@@ -46,7 +46,7 @@ export const ToggleColorMode = ({ children }: ToggleModeProps): JSX.Element => {
   const colorMode = useMemo(() => ({ toggleColorMode }), [toggleColorMode]);
 
   // Create a Material-UI theme based on the selected color mode.
-  const theme = useMemo(() => createMuiTheme(mode || "light"), [mode]);
+  const theme = useMemo(() => createMuiTheme(mode), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

@@ -13,7 +13,9 @@ export const Explore = () => {
       <SecondaryDashbord>
         <ExploreCategory/>
       </SecondaryDashbord>
-      <Main />
+      <Main>
+        {/*  */}
+      </Main>
     </Box>
   )
 }

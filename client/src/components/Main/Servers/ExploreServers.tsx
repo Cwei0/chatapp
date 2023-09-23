@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { useCrud } from "../../service";
-import { Server } from "../../types";
+import { useCrud } from "../../../service";
+import { Server } from "../../../types";
 import { useEffect } from "react";
 import {
   Avatar,
@@ -17,7 +17,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { MEDIA_URL } from "../../config";
+import { MEDIA_URL } from "../../../config";
 
 export const ExploreServers = () => {
   const { categoryName } = useParams();

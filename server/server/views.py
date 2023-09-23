@@ -115,8 +115,8 @@ class ServerListViewSet(ViewSet):
 
         # Filter queryset by server id if provided
         if by_server_id:
-            if not request.user.is_authenticated:
-                raise AuthenticationFailed()
+            # if not request.user.is_authenticated:
+            #     raise AuthenticationFailed()
             try:
                 self.queryset = self.queryset.filter(id=by_server_id)
                 # If the server with the given id does not exist, raise a ValidationError

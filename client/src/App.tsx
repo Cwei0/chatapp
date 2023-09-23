@@ -4,7 +4,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { Explore, Home } from "./pages";
+import { Explore, Home, ServerPage } from "./pages";
 import { ToggleColorMode } from "./theme";
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
     createRoutesFromElements(
       <Route>
         <Route path="/" element={<Home />} />
+        <Route path="/server/:serverId/:channelId?" element={<ServerPage />} />
         <Route path="/explore/:categoryName" element={<Explore />} />
       </Route>
     )

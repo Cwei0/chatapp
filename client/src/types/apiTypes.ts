@@ -8,6 +8,7 @@ export interface Server {
   num_members: string;
   banner: string;
   owner: number;
+  channel_server: Array<Channel>;
 }
 
 export interface Category {
@@ -23,4 +24,16 @@ export interface Channel {
   topic: string;
   owner: number;
   server: number;
+}
+
+export interface JsonMessage {
+  type: string;
+  new_message: Message
+}
+
+export interface Message {
+  id: number;
+  sender: string;
+  content: string;
+  timestamp: string;
 }
