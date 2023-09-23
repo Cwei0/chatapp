@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import { Message, Server } from "../../../types";
+import { Message } from "../../../types";
 import { useCrud } from "../../../service";
 
 export const MessageInterface = () => {
-  const { fetchData, data } = useCrud<Server>({
-    apiUrl: "",
-    initialData: [],
-  });
+  const { serverId, channelId } = useParams();
   const [message, setMessage] = useState<Array<Message>>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-  const { serverId, channelId } = useParams();
+  const { fetchData } = useCrud<Message>({
+    apiUrl: `messages/?channel_id=${channelId}`,
+    initialData: [],
+  });
   const socketUrl = channelId
     ? `ws://localhost:9000/${serverId}/${channelId}`
     : null;
   const { sendJsonMessage } = useWebSocket(socketUrl, {
-    onOpen: () => {
-      console.log("Connected!");
+    onOpen: async () => {
+      setMessage([]);
+      try {
+        const data = await fetchData();
+        setMessage(Array.isArray(data) ? data : []);
+        console.log("Connected!");
+      } catch (error) {
+        console.error(error);
+      }
     },
     onClose: () => {
       console.log("Closed!");
@@ -27,7 +34,6 @@ export const MessageInterface = () => {
     },
     onMessage: (msg) => {
       const data = JSON.parse(msg.data);
-      console.log(data);
       setMessage((prevMsg) => [...prevMsg, data.new_message]);
     },
   });
