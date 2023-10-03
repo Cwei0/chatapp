@@ -53,7 +53,7 @@ export const ServerPage = () => {
         <ServerChannels data={data} />
       </SecondaryDashbord>
       <Main>
-        <MessageInterface />
+        <MessageInterface data={data}/>
       </Main>
     </Box>
   );

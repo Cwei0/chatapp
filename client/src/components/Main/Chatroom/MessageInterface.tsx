@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import { Message } from "../../../types";
+import { Message, Server } from "../../../types";
 import { useCrud } from "../../../service";
+import { Box, Typography } from "@mui/material";
+import { MessageInterfaceChannels } from ".";
 
-export const MessageInterface = () => {
+type Props = {
+  data: Array<Server>;
+};
+
+export const MessageInterface = ({ data }: Props) => {
   const { serverId, channelId } = useParams();
   const [message, setMessage] = useState<Array<Message>>([]);
   const [newMessage, setNewMessage] = useState<string>("");
@@ -17,7 +23,6 @@ export const MessageInterface = () => {
     : null;
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     onOpen: async () => {
-      setMessage([]);
       try {
         const data = await fetchData();
         setMessage(Array.isArray(data) ? data : []);
@@ -38,33 +43,70 @@ export const MessageInterface = () => {
     },
   });
   return (
-    <div>
-      {message.map((msg, index) => (
-        <div key={index}>
-          <h4>{msg.sender}</h4>
-          <p>{msg.content}</p>
-        </div>
-      ))}
-      <form action="">
-        <label htmlFor="">
-          Enter Message:{" "}
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
+    <>
+      <MessageInterfaceChannels data={data} />
+      {channelId == undefined ? (
+        <Box
+          sx={{
+            overflow: "hidden",
+            p: { xs: 0 },
+            height: "calc(80vh)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ textAlign: "center" }}>
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              letterSpacing={"-0.5px"}
+              sx={{ px: 5, maxWidth: "600px" }}
+            >
+              Welcome to {data?.[0]?.name ?? "Server"}
+            </Typography>
+            <Typography>
+              {data?.[0]?.description ?? "This is our Home"}
+            </Typography>
+          </Box>
+        </Box>
+      ) : (
+        <>
+          <div>
+            {message.map((msg, index) => (
+              <div key={index}>
+                <h4>{msg.sender}</h4>
+                <p>{msg.content}</p>
+              </div>
+            ))}
+            <form>
+              <label>
+                Enter Message:{" "}
+                <input
+                  type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      sendJsonMessage({ type: "message", newMessage });
+                      setNewMessage("");
+                    }
+                  }}
+                />
+              </label>
+            </form>
+            <button
+              onClick={() => {
                 sendJsonMessage({ type: "message", newMessage });
                 setNewMessage("");
-              }
-            }}
-          />
-        </label>
-      </form>
-      <button onClick={() => sendJsonMessage({ type: "message", newMessage })}>
-        Send Message
-      </button>
-    </div>
+              }}
+            >
+              Send Message
+            </button>
+          </div>
+        </>
+      )}
+    </>
   );
 };
