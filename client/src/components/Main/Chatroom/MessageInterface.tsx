@@ -1,13 +1,30 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { Message, Server } from "../../../types";
 import { useCrud } from "../../../service";
-import { Box, Typography } from "@mui/material";
-import { MessageInterfaceChannels } from ".";
+import {
+  Box,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  useTheme,
+  TextField,
+} from "@mui/material";
+import { MessageInterfaceChannels, Scroll } from ".";
 
 type Props = {
   data: Array<Server>;
+};
+
+type SendMessageData = {
+  type: string;
+  newMessage: string;
+  [key: string]: any;
 };
 
 export const MessageInterface = ({ data }: Props) => {
@@ -25,6 +42,7 @@ export const MessageInterface = ({ data }: Props) => {
     onOpen: async () => {
       try {
         const data = await fetchData();
+        setMessage([]);
         setMessage(Array.isArray(data) ? data : []);
         console.log("Connected!");
       } catch (error) {
@@ -40,8 +58,24 @@ export const MessageInterface = ({ data }: Props) => {
     onMessage: (msg) => {
       const data = JSON.parse(msg.data);
       setMessage((prevMsg) => [...prevMsg, data.new_message]);
+      setNewMessage("");
     },
   });
+  const theme = useTheme();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendJsonMessage({
+      type: "message",
+      newMessage,
+    } as SendMessageData);
+  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendJsonMessage({ type: "message", newMessage } as SendMessageData);
+    }
+  };
+
   return (
     <>
       <MessageInterfaceChannels data={data} />
@@ -72,39 +106,82 @@ export const MessageInterface = ({ data }: Props) => {
         </Box>
       ) : (
         <>
-          <div>
-            {message.map((msg, index) => (
-              <div key={index}>
-                <h4>{msg.sender}</h4>
-                <p>{msg.content}</p>
-              </div>
-            ))}
-            <form>
-              <label>
-                Enter Message:{" "}
-                <input
-                  type="text"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      sendJsonMessage({ type: "message", newMessage });
-                      setNewMessage("");
-                    }
-                  }}
-                />
-              </label>
-            </form>
-            <button
-              onClick={() => {
-                sendJsonMessage({ type: "message", newMessage });
-                setNewMessage("");
+          <Box sx={{ overflow: "hidden", p: 0, height: "calc(100vh - 190px)" }}>
+            <Scroll>
+              <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+                {message.map((msg, index) => (
+                  <ListItem key={index} alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="user image" />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primaryTypographyProps={{
+                        fontSize: "12px",
+                        variant: "body2",
+                      }}
+                      primary={
+                        <Typography
+                          component="span"
+                          variant="body1"
+                          color="text.primary"
+                          sx={{ display: "inline", fontWeight: 600 }}
+                        >
+                          {msg.sender}
+                        </Typography>
+                      }
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            variant="body1"
+                            style={{
+                              overflow: "visible",
+                              whiteSpace: "normal",
+                              textOverflow: "clip",
+                            }}
+                            sx={{
+                              display: "inline",
+                              lineHeight: 1.2,
+                              fontWeight: 400,
+                              letterSpacing: "-0.2px",
+                            }}
+                            color="text.primary"
+                            component="span"
+                          >
+                            {msg.content}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Scroll>
+          </Box>
+          <Box sx={{ position: "sticky", bottom: 0, width: "100%" }}>
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                bottom: 0,
+                right: 0,
+                padding: "1rem",
+                backgroundColor: theme.palette.background.default,
+                zIndex: 1,
               }}
             >
-              Send Message
-            </button>
-          </div>
+              <Box display="flex">
+                <TextField
+                  fullWidth
+                  multiline
+                  value={message}
+                  minRows={1}
+                  maxRows={4}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  sx={{ flexGrow: 1 }}
+                />
+              </Box>
+            </form>
+          </Box>
         </>
       )}
     </>

@@ -87,7 +87,7 @@ export const MessageInterfaceChannels = ({ data }: Props) => {
               />
             </ListItemAvatar>
           </Box>
-          <Typography noWrap component="div">
+          <Typography noWrap component="div" sx={{textTransform: "capitalize"}}>
             {channelName}
           </Typography>
           <Box flexGrow={1}></Box>
@@ -96,7 +96,7 @@ export const MessageInterfaceChannels = ({ data }: Props) => {
               <MoreVert />
             </IconButton>
           </Box>
-          <Drawer anchor="left" open={sideMenu} onClose={toggleDraw}>
+          <Drawer anchor="left" open={sideMenu} onClose={toggleDraw(false)}>
             {list()}
           </Drawer>
         </Toolbar>
