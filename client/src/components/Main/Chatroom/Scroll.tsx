@@ -1,12 +1,19 @@
 import { Box, styled } from "@mui/material";
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
-type Props = {
+/**
+ * Props for the Scroll component.
+ */
+type ScrollProps = {
+  /** The content to be scrolled. */
   children: React.ReactNode;
 };
 
-const ScrollContainer = styled(Box)(({ theme }) => ({
-  height: "calc(100vh - 100px)",
+/**
+ * A scrollable container component with custom styling.
+ */
+const ScrollContainer = styled(Box)(() => ({
+  height: "calc(100vh - 190px)",
   overflowY: "scroll",
   "&::-webkit-scrollbar": {
     width: "8px",
@@ -27,6 +34,25 @@ const ScrollContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const Scroll = ({ children }: Props) => {
-  return <ScrollContainer>{children}</ScrollContainer>;
+/**
+ * Scroll component that automatically scrolls to the bottom when its content changes.
+ */
+export const Scroll = ({ children }: ScrollProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Scroll to the bottom of the container.
+   */
+  const scrollToBottom = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [scrollToBottom, children]);
+
+  return <ScrollContainer ref={scrollRef}>{children}</ScrollContainer>;
 };
+ 

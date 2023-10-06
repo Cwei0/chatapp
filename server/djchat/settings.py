@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "rest_framework",
     "corsheaders",
+    'rest_framework_simplejwt',
     # Internal
     "account",
     "server",
@@ -143,8 +144,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "account.Account"
 
 auth_classes = [
-    "rest_framework.authentication.SessionAuthentication",
+    # "rest_framework.authentication.SessionAuthentication",
     # "server.authentication.TokenAuthentication",
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
 ]
 
 REST_FRAMEWORK = {

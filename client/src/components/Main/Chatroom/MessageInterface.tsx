@@ -76,6 +76,19 @@ export const MessageInterface = ({ data }: Props) => {
     }
   };
 
+  function formatTimestamp(timestamp: string): string {
+    const date = new Date(Date.parse(timestamp));
+    const formattedDate = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
+    const formattedTime = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    return `${formattedDate} at ${formattedTime}`;
+  }
+
   return (
     <>
       <MessageInterfaceChannels data={data} />
@@ -106,7 +119,7 @@ export const MessageInterface = ({ data }: Props) => {
         </Box>
       ) : (
         <>
-          <Box sx={{ overflow: "hidden", p: 0, height: "calc(100vh - 190px)" }}>
+          <Box sx={{ overflow: "hidden", p: 0, height: "calc(100vh - 100px)" }}>
             <Scroll>
               <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                 {message.map((msg, index) => (
@@ -120,14 +133,24 @@ export const MessageInterface = ({ data }: Props) => {
                         variant: "body2",
                       }}
                       primary={
-                        <Typography
-                          component="span"
-                          variant="body1"
-                          color="text.primary"
-                          sx={{ display: "inline", fontWeight: 600 }}
-                        >
-                          {msg.sender}
-                        </Typography>
+                        <>
+                          <Typography
+                            component="span"
+                            variant="body1"
+                            color="text.primary"
+                            sx={{ display: "inline", fontWeight: 600 }}
+                          >
+                            {msg.sender}
+                          </Typography>
+                          <Typography
+                            component="span"
+                            variant="caption"
+                            color="textSecondary"
+                          >
+                            {" at "}
+                            {formatTimestamp(msg.timestamp)}
+                          </Typography>
+                        </>
                       }
                       secondary={
                         <React.Fragment>

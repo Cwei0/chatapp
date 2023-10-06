@@ -24,6 +24,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
     SpectacularRedocView,
 )
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,6 +32,8 @@ urlpatterns = [
     path("api/docs/schema/ui/", SpectacularSwaggerView.as_view(), name="swagger-ui"),
     path("api/docs/schema/redoc/", SpectacularRedocView.as_view(), name="redoc"),
     path("api/", include("djchat.router")),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
 ]
 
 websockets_urlpatterns = [
